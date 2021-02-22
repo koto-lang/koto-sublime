@@ -1,0 +1,103 @@
+%YAML 1.2
+---
+
+# See http://www.sublimetext.com/docs/3/syntax.html
+# See https://www.sublimetext.com/docs/3/scope_naming.html
+name: Koto
+file_extensions:
+  - koto
+scope: source.koto
+
+variables:
+  ident: '([[:alpha:]_][[:alnum:]_]*)'
+
+contexts:
+  prototype:
+    - include: comments
+
+  main:
+    - include: assertions
+    - include: keywords
+    - include: numbers
+    - include: operators
+    - include: values
+    - include: strings
+
+  assertions:
+    - match: '\b(assert|assert_eq|assert_ne|assert_near)\b'
+      scope: keyword.control.flow.assert.koto
+
+  keywords:
+    - match: '\b(for|in|loop|until|while)\b'
+      scope: keyword.control.koto
+    - match: '\b(catch|else|if|match|switch|then|try)\b'
+      scope: keyword.control.conditional.koto
+    - match: '\b(export|from|import)\b'
+      scope: keyword.control.import
+    - match: '\b(false|true)\b'
+      scope: constant.language.koto
+    - match: '\b(self)\b'
+      scope: variable.language.koto
+    - match: '\b(break|continue|return|yield)\b'
+      scope: keyword.control.flow.koto
+
+  values:
+    - match: '\b{{ident}}(?=(\s)+?=(\s)+?\|)\b'
+      scope: entity.name.function.koto
+    - match: '\b{{ident}}(?=(([ \t])+([\w\|\(\[)]))|(\())\b'
+      scope: variable.function.koto
+    - match: '\b(?!\.\.)(?<=\.){{ident}}\b'
+      scope: variable.other.koto
+    - match: '\b{{ident}}(?=(\s)+?=)\b'
+      scope: variable.function.koto
+    - match: '\b{{ident}}(?=\:)\b'
+      scope: variable.other.member.koto
+
+  numbers:
+    - match: '\b-?[0-9]*\.?[0-9]+(e[-+]?[0-9]+)?\b'
+      scope: constant.numeric.koto
+
+  operators:
+    - match: \+=|-=|\*=|/=|%=
+      scope: keyword.operator.assignment.augmented.koto
+    - match: \+|\-|\*|/|%|
+      scope: keyword.operator.arithmetic.koto
+    - match: <\=|>\=|\=\=|<|>|\!\=
+      scope: keyword.operator.comparison.koto
+    - match: '=(?!=)'
+      scope: keyword.operator.assignment.koto
+    - match: \b(and|not|or)\b
+      scope: keyword.operator.word.koto
+    - match: \|
+      scope: keyword.variable.function
+    - match: \.\.|\.\.\=
+      scope: keyword.operator.bitwise.koto
+
+  strings:
+    - match: '"'
+      scope: punctuation.definition.string.begin.koto
+      push: inside_string
+
+  inside_string:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.double.koto
+    - match: '\\.|\\\n'
+      scope: constant.character.escape.koto
+    - match: '"'
+      scope: punctuation.definition.string.end.koto
+      pop: true
+
+  comments:
+    - match: '#-'
+      scope: punctuation.definition.comment.koto
+      push:
+        - meta_scope: comment.block.koto
+        - include: comments
+        - match: '-#'
+          pop: true
+    - match: '#'
+      scope: punctuation.definition.comment.koto
+      push:
+        - meta_scope: comment.line.koto
+        - match: $\n?
+          pop: true
