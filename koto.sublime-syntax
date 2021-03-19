@@ -28,9 +28,9 @@ contexts:
       scope: keyword.control.flow.assert.koto
 
   keywords:
-    - match: '\b(for|in|loop|until|while)\b'
+    - match: '\b(catch|finally|for|in|loop|throw|try|until|while)\b'
       scope: keyword.control.koto
-    - match: '\b(catch|else|if|match|switch|then|try)\b'
+    - match: '\b(else|if|match|switch|then)\b'
       scope: keyword.control.conditional.koto
     - match: '\b(export|from|import)\b'
       scope: keyword.control.import
