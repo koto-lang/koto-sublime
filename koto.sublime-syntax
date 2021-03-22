@@ -1,7 +1,7 @@
 %YAML 1.2
 ---
 
-# See http://www.sublimetext.com/docs/3/syntax.html
+# See http://www.sublimetext.com/docs/3/syntax.html#ver-dev
 # See https://www.sublimetext.com/docs/3/scope_naming.html
 name: Koto
 file_extensions:
