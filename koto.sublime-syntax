@@ -80,16 +80,32 @@ contexts:
   strings:
     - match: '"'
       scope: punctuation.definition.string.begin.koto
-      push: inside_string
+      push: double_quoted_string
+    - match: "'"
+      scope: punctuation.definition.string.begin.koto
+      push: single_quoted_string
 
-  inside_string:
+  single_quoted_string:
+    - include: inside_string
+    - meta_scope: string.quoted.single.koto
     - meta_include_prototype: false
-    - meta_scope: string.quoted.double.koto
-    - match: '\\.|\\\n'
-      scope: constant.character.escape.koto
     - match: '"'
       scope: punctuation.definition.string.end.koto
       pop: true
+
+  double_quoted_string:
+    - include: inside_string
+    - meta_scope: string.quoted.double.koto
+    - meta_include_prototype: false
+    - match: '"'
+      scope: punctuation.definition.string.end.koto
+      pop: true
+
+  inside_string:
+    - match: '\\[rnt\"\$]'
+      scope: constant.character.escape.koto
+    - match: "\\\'"
+      scope: constant.character.escape.koto
 
   comments:
     - match: '#-'
