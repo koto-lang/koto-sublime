@@ -21,8 +21,8 @@ contexts:
     - include: keywords
     - include: numbers
     - include: operators
-    - include: values
     - include: strings
+    - include: values
 
   assertions:
     - match: '\b(assert|assert_eq|assert_ne|assert_near)\b'
@@ -120,6 +120,7 @@ contexts:
     - match: "'"
       scope: punctuation.definition.string.begin.koto
       push: single_quoted_string
+    - include: raw_string
 
   single_quoted_string:
     - include: inside_string
@@ -159,6 +160,16 @@ contexts:
     - match: \}
       scope: punctuation.section.interpolation.end.koto
       pop: true
+
+  raw_string:
+    - match: r(#{0,255})("|')
+      scope: punctuation.definition.string.begin.koto
+      push:
+        - meta_include_prototype: false
+        - meta_scope: string.quoted.raw.koto
+        - match: '\2\1'
+          scope: punctuation.definition.string.end.koto
+          pop: true
 
   comments:
     - match: '#-'
