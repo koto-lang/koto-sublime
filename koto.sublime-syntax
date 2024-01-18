@@ -68,7 +68,7 @@ contexts:
       scope: keyword.control.koto
     - match: '\b(else|if|match|switch|then)\b'
       scope: keyword.control.conditional.koto
-    - match: '\b(export|from|import)\b'
+    - match: '\b(export|from|import|as)\b'
       scope: keyword.control.import
     - match: '\b(false|true)\b'
       scope: constant.language.koto
