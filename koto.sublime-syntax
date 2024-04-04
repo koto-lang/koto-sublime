@@ -139,7 +139,7 @@ contexts:
       pop: true
 
   inside_string:
-    - match: '\\[rnt\"\$]'
+    - match: '\\[rnt\"\{]'
       scope: constant.character.escape.koto
     - match: "\\\\'"
       scope: constant.character.escape.koto
@@ -147,9 +147,7 @@ contexts:
       scope: constant.character.escape.koto
     - match: '\\u{[0-9a-fA-F]{1,6}}'
       scope: constant.character.escape.koto
-    - match: '\${{ident}}'
-      scope: punctuation.section.interpolation.koto
-    - match: '\${'
+    - match: \{
       scope: punctuation.section.interpolation.begin.koto
       push: string_interpolation_expression
 
