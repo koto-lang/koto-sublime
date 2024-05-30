@@ -17,6 +17,7 @@ contexts:
 
   main:
     - include: let
+    - include: function
     - include: assertions
     - include: braces
     - include: keywords
@@ -61,7 +62,6 @@ contexts:
     - clear_scopes: true
     - meta_scope: meta.brackets
     - match: \]
-
       scope: punctuation.section.brackets.end.koto
       pop: true
 
@@ -186,16 +186,50 @@ contexts:
         - match: $\n?
           pop: true
 
+  id_with_type:
+    - match: '({{ident}})(:\s*({{ident}}))?'
+      captures:
+        1: variable.other.koto
+        3: storage.type.koto
+
+  comma:
+    - match: ','
+      scope: punctuation.separator.koto
+
   let:
     - match: '\blet\b'
       scope: keyword.control.koto
       push:
-        - match: '({{ident}})(:\s*({{ident}}))?'
-          captures:
-            1: variable.other.koto
-            3: storage.type.koto
-        - match: ','
-          scope: punctuation.separator.variables.koto
+        - include: id_with_type
+        - include: comma
         - match: '='
           scope: keyword.operator.assignment.koto
           pop: true
+
+  function:
+    - match: '\|'
+      scope: keyword.other.function-definition.koto
+      push: function_args
+
+  function_args:
+    - match: '\|'
+      scope: keyword.other.function-definition.koto
+      push: return_type
+      pop: true
+    - include: id_with_type
+    - include: comma
+    - match: '\('
+      scope: punctuation.definition.arguments.begin.koto
+      push: function_args
+    - match: '\)'
+      scope: punctuation.definition.arguments.end.koto
+      pop: true
+
+  return_type:
+    - match: '(->)(\s*{{ident}})'
+      captures:
+        1: keyword.operator.type.koto
+        3: storage.type.koto
+      pop: true
+    - match: '(.$)'
+      pop: true
