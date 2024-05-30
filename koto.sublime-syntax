@@ -78,6 +78,8 @@ contexts:
       scope: variable.language.koto
     - match: '\b(break|continue|return|yield)\b'
       scope: keyword.control.flow.koto
+    - match: '\b(debug)\b'
+      scope: keyword.other.koto
 
   values:
     - match: '\b{{ident}}(?=\:)'
