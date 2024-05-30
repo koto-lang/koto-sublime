@@ -16,6 +16,7 @@ contexts:
     - include: comments
 
   main:
+    - include: let
     - include: assertions
     - include: braces
     - include: keywords
@@ -60,6 +61,7 @@ contexts:
     - clear_scopes: true
     - meta_scope: meta.brackets
     - match: \]
+
       scope: punctuation.section.brackets.end.koto
       pop: true
 
@@ -182,4 +184,18 @@ contexts:
       push:
         - meta_scope: comment.line.koto
         - match: $\n?
+          pop: true
+
+  let:
+    - match: '\blet\b'
+      scope: keyword.control.koto
+      push:
+        - match: '({{ident}})(:\s*({{ident}}))?'
+          captures:
+            1: variable.other.koto
+            3: storage.type.koto
+        - match: ','
+          scope: punctuation.separator.variables.koto
+        - match: '='
+          scope: keyword.operator.assignment.koto
           pop: true
