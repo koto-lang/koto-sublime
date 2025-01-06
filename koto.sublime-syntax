@@ -9,7 +9,8 @@ file_extensions:
 scope: source.koto
 
 variables:
-  ident: '([[:alpha:]_][[:alnum:]_]*)'
+  ident: '[[:alpha:]_][[:alnum:]_]*'
+  type: '{{ident}}\??'
 
 contexts:
   prototype:
@@ -189,10 +190,11 @@ contexts:
           pop: true
 
   id_with_type:
-    - match: '({{ident}})(:\s*({{ident}}))?'
+    - match: '({{ident}})((:)\s*({{type}}))?'
       captures:
         1: variable.other.koto
-        3: storage.type.koto
+        3: punctuation.separator.koto
+        4: storage.type.koto
 
   comma:
     - match: ','
@@ -214,11 +216,13 @@ contexts:
       push: function_args
 
   function_args:
-    - match: '\|'
-      scope: keyword.other.function-definition.koto
-      push: return_type
+    - match: '(\|)\s*((->)\s*({{type}}))?'
+      captures:
+        1: keyword.other.function-definition.koto
+        3: keyword.operator.type.koto
+        4: storage.type.koto
       pop: true
-    - include: id_with_type
+    - include: function_arg
     - include: comma
     - match: '\('
       scope: punctuation.definition.arguments.begin.koto
@@ -227,11 +231,9 @@ contexts:
       scope: punctuation.definition.arguments.end.koto
       pop: true
 
-  return_type:
-    - match: '(->)(\s*{{ident}})'
+  function_arg:
+    - match: '({{ident}}(\.\.\.)?)((:)\s*({{type}}))?'
       captures:
-        1: keyword.operator.type.koto
-        3: storage.type.koto
-      pop: true
-    - match: '(.$)'
-      pop: true
+        1: variable.parameter.koto
+        4: punctuation.separator.koto
+        5: storage.type.koto
