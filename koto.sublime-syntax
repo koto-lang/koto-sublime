@@ -117,6 +117,8 @@ contexts:
       scope: keyword.operator.bitwise.koto
     - match: \@
       scope: entity.name.impl.koto
+    - match: \?
+      scope: keyword.operator.logical.koto
 
   strings:
     - match: '"'
