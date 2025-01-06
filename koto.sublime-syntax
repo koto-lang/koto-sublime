@@ -83,12 +83,13 @@ contexts:
       scope: keyword.other.koto
 
   values:
-    - match: '\b{{ident}}(?=\:)'
-      scope: entity.name.function.koto
     - match: '\b(?!\.\.)(?<=\.){{ident}}\b'
       scope: variable.function.koto
-    - match: '\b{{ident}}'
-      scope: variable.other.koto
+    - match: '\b({{ident}})((:)\s*({{type}}))?'
+      captures:
+        1: variable.other.koto
+        3: punctuation.separator.koto
+        4: storage.type.koto
 
   numbers:
     - match: '\b-?[0-9]*\.?[0-9]+(e[-+]?[0-9]+)?\b'
