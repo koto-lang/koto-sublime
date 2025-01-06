@@ -73,7 +73,7 @@ contexts:
       scope: keyword.control.conditional.koto
     - match: '\b(export|from|import|as)\b'
       scope: keyword.control.import
-    - match: '\b(false|true)\b'
+    - match: '\b(false|true|null)\b'
       scope: constant.language.koto
     - match: '\b(self)\b'
       scope: variable.language.koto
