@@ -25,7 +25,7 @@ contexts:
     - include: numbers
     - include: operators
     - include: strings
-    - include: values
+    - include: variables
 
   assertions:
     - match: '\b(assert|assert_eq|assert_ne|assert_near)\b'
@@ -82,7 +82,14 @@ contexts:
     - match: '\b(debug)\b'
       scope: keyword.other.koto
 
-  values:
+  variables:
+    - match: '(@{{ident}})(\s*{{ident}})?(:)'
+      captures:
+        1: entity.name.koto
+        2: entity.name.function.koto
+        3: punctuation.separator.koto
+    - match: '@{{ident}}'
+      scope: entity.name.koto
     - match: '\b(?!\.\.)(?<=\.){{ident}}\b'
       scope: variable.function.koto
     - match: '\b({{ident}})((:)\s*({{type}}))?'
@@ -116,8 +123,6 @@ contexts:
       scope: keyword.variable.function.koto
     - match: \.\.\=|\.\.\.|\.\.
       scope: keyword.operator.bitwise.koto
-    - match: \@
-      scope: entity.name.impl.koto
     - match: \?
       scope: keyword.operator.logical.koto
 
