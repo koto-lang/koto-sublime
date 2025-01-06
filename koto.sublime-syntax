@@ -109,9 +109,11 @@ contexts:
       scope: constant.numeric.integer.hexadecimal.koto
 
   operators:
+    - match: \->|\?
+      scope: keyword.operator.logical.koto
     - match: \+=|-=|\*=|/=|%=
       scope: keyword.operator.assignment.augmented.koto
-    - match: \+|\-|\*|/|%|
+    - match: '[\+\-\*/%]'
       scope: keyword.operator.arithmetic.koto
     - match: <\=|>\=|\=\=|<|>|\!\=
       scope: keyword.operator.comparison.koto
@@ -119,12 +121,10 @@ contexts:
       scope: keyword.operator.assignment.koto
     - match: \b(and|not|or)\b
       scope: keyword.operator.word.koto
-    - match: \|
-      scope: keyword.variable.function.koto
     - match: \.\.\=|\.\.\.|\.\.
       scope: keyword.operator.bitwise.koto
-    - match: \?
-      scope: keyword.operator.logical.koto
+    - match: \;
+      scope: punctuation.terminator.koto
 
   strings:
     - match: '"'
