@@ -1,6 +1,8 @@
 %YAML 1.2
 ---
 
+# This could do with substantial reworking with proper context branching for expressions
+
 # See http://www.sublimetext.com/docs/3/syntax.html#ver-dev
 # See https://www.sublimetext.com/docs/3/scope_naming.html
 name: Koto
@@ -22,6 +24,9 @@ contexts:
     - include: assertions
     - include: braces
     - include: keywords
+    - include: terms
+
+  terms:
     - include: numbers
     - include: operators
     - include: strings
@@ -234,10 +239,20 @@ contexts:
     - include: comma
     - match: '\('
       scope: punctuation.definition.arguments.begin.koto
-      push: function_args
+      push: nested_function_args
+
+  nested_function_args:
+    - include: function_args
     - match: '\)'
       scope: punctuation.definition.arguments.end.koto
       pop: true
+
+  function_return_type:
+    - match: '(\|)\s*((->)\s*({{type}}))?'
+      captures:
+        1: keyword.other.function-definition.koto
+        3: keyword.operator.type.koto
+        4: storage.type.koto
 
   function_arg:
     - match: '({{ident}}(\.\.\.)?)((:)\s*({{type}}))?'
@@ -245,3 +260,16 @@ contexts:
         1: variable.parameter.koto
         4: punctuation.separator.koto
         5: storage.type.koto
+    - match: '='
+      scope: keyword.operator.assignment.koto
+      push:
+        - include: terms
+        - match: '(\|)\s*((->)\s*({{type}}))?'
+          captures:
+            1: keyword.other.function-definition.koto
+            3: keyword.operator.type.koto
+            4: storage.type.koto
+          pop: 2 # Pop out of function_args
+        - match: ','
+          scope: punctuation.separator.koto
+          pop: 1 # Pop back to function_args
